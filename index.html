@@ -13,8 +13,8 @@ a.b{display:inline-block;padding:14px 30px;background:#C6A252;color:#0A203A;text
 </div>
 <script>
 /* Il percorso arriva dopo il # e non viene mai inviato a nessun server. */
-var h=new URLSearchParams(location.hash.slice(1)),c=h.get("c")||"Apri File",t=h.get("t")||"";
-var ok=(/^Apri File( STILCA)?$/.test(c)&&t)||c==="Apri iLMeteo";
+var h=new URLSearchParams(location.hash.slice(1)),c=h.get("c")||"",t=h.get("t")||"";
+var ok=(/^Apri File .{1,40}$/.test(c)&&t)||c==="Apri iLMeteo";
 document.getElementById("n").textContent=t?t.split("/").pop():(ok?c:"Nessun file indicato.");
 var u="shortcuts://run-shortcut?name="+encodeURIComponent(c)+(t?"&input=text&text="+encodeURIComponent(t):"");
 var b=document.getElementById("b");if(ok){b.href=u;location.href=u}else b.style.display="none";
