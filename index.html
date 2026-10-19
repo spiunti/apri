@@ -7,9 +7,11 @@ body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:c
 .box{max-width:420px;padding:28px 22px;text-align:center}
 h1{font-weight:500;font-size:15px;letter-spacing:.24em;text-transform:uppercase;margin:0 0 10px;color:#C6A252}
 p{color:#9aa9bb;font-size:14px;line-height:1.5;margin:0 0 22px;word-break:break-word}
-a.b{display:inline-block;padding:14px 30px;background:#C6A252;color:#0A203A;text-decoration:none;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border-radius:3px}
+a.b,button.b{display:inline-block;padding:14px 30px;background:#C6A252;color:#0A203A;text-decoration:none;font:700 15px -apple-system,sans-serif;letter-spacing:.16em;text-transform:uppercase;border-radius:3px;border:0}
+#fatto{display:none}
 </style></head><body><div class="box">
-<h1>Apri file</h1><p id="n">Apro il documento…</p><a class="b" id="b" href="#">Apri</a>
+<div id="via"><h1>Apri file</h1><p id="n">Apro il documento…</p><a class="b" id="b" href="#">Apri</a></div>
+<div id="fatto"><h1>Documento aperto</h1><p>Chiudi questa pagina per tornare alla Dash Board.</p><button class="b" id="chiudi" type="button">Chiudi</button></div>
 </div>
 <script>
 /* Il percorso arriva dopo il # e non viene mai inviato a nessun server. */
@@ -17,5 +19,13 @@ var h=new URLSearchParams(location.hash.slice(1)),c=h.get("c")||"",t=h.get("t")|
 var ok=(/^Apri File .{1,40}$/.test(c)&&t)||c==="Apri iLMeteo";
 document.getElementById("n").textContent=t?t.split("/").pop():(ok?c:"Nessun file indicato.");
 var u="shortcuts://run-shortcut?name="+encodeURIComponent(c)+(t?"&input=text&text="+encodeURIComponent(t):"");
-var b=document.getElementById("b");if(ok){b.href=u;location.href=u}else b.style.display="none";
+var b=document.getElementById("b"),partito=false;
+function fatto(){document.getElementById("via").style.display="none";document.getElementById("fatto").style.display="block"}
+document.getElementById("chiudi").onclick=function(){try{window.close()}catch(e){}try{history.back()}catch(e){}};
+/* si apre una volta sola: tornando indietro non riparte il documento */
+var chiave="aperto:"+location.hash,gia=false;try{gia=sessionStorage.getItem(chiave)==="1"}catch(e){}
+document.addEventListener("visibilitychange",function(){if(document.hidden){partito=true}else if(partito){fatto();try{window.close()}catch(e){}}});
+if(ok&&!gia){b.href=u;try{sessionStorage.setItem(chiave,"1")}catch(e){}location.href=u}
+else if(ok&&gia){b.href=u;fatto()}
+else b.style.display="none";
 </script></body></html>
