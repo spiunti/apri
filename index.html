@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>Apri file</title>
+<style>
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#061325;color:#f1f3f6;font:16px -apple-system,BlinkMacSystemFont,sans-serif}
+.box{max-width:420px;padding:28px 22px;text-align:center}
+h1{font-weight:500;font-size:15px;letter-spacing:.24em;text-transform:uppercase;margin:0 0 10px;color:#C6A252}
+p{color:#9aa9bb;font-size:14px;line-height:1.5;margin:0 0 22px;word-break:break-word}
+a.b{display:inline-block;padding:14px 30px;background:#C6A252;color:#0A203A;text-decoration:none;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border-radius:3px}
+</style></head><body><div class="box">
+<h1>Apri file</h1><p id="n">Apro il documento…</p><a class="b" id="b" href="#">Apri</a>
+</div>
+<script>
+/* Il percorso arriva dopo il # e non viene mai inviato a nessun server. */
+var h=new URLSearchParams(location.hash.slice(1)),c=h.get("c")||"Apri File",t=h.get("t")||"";
+var ok=(/^Apri File( STILCA)?$/.test(c)&&t)||c==="Apri iLMeteo";
+document.getElementById("n").textContent=t?t.split("/").pop():(ok?c:"Nessun file indicato.");
+var u="shortcuts://run-shortcut?name="+encodeURIComponent(c)+(t?"&input=text&text="+encodeURIComponent(t):"");
+var b=document.getElementById("b");if(ok){b.href=u;location.href=u}else b.style.display="none";
+</script></body></html>
